@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../../models/user');
 var jwt = require('jsonwebtoken');
 
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -31,7 +32,7 @@ router.post('/signin' , (req , res , next) =>{
 
     //Generate token'
 
-    const token = jwt.sign({userId : user._id} , secret);
+    const token = jwt.sign({userId : user._id} , process.env.secret);
     return 
   })
 })
