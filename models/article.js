@@ -12,8 +12,14 @@ var articleSchema = new mongoose.Schema({
        required : true
    },
    description : String,
-   tags : String,
-   commentId : []
+   tags : {
+       type : [Schema.Types.ObjectId],
+       ref : 'Tag',
+   },
+   commentId : {
+       type : [Schema.Types.ObjectId],
+       ref : 'Comment'
+   }
 })
  
  
