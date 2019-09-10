@@ -41,7 +41,15 @@ router.put('/update/:id' , (req , res , next) =>{
     })
 })
 
+//deleting article
 
+router.delete('/delete/:id' , (req , res , next) =>{
+    var id = req.params.id;
+    Article.findByIdAndDelete(id , (err , deletedContent) =>{
+        if(err) return res.json({msg : "Error deleting article"});
+        return res.json({msg : "Success"});
+    })
+})
 
 
 
