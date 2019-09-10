@@ -14,4 +14,4 @@ var tagSchema = new mongoose.Schema({
 })
 
 
-module.exports = mongoose.model("Comments" , tagSchema);
+module.exports = mongoose.model("Tag" , tagSchema);

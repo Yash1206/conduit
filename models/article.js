@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
  
 
 ///article schema
-var articleSchema = new mongoose.Schema({
+var articleSchema = new Schema({
    title :{
        type : String,
        required : true
@@ -22,10 +23,10 @@ var articleSchema = new mongoose.Schema({
    },
    userId :{
        type : Schema.Types.ObjectId,
-       required : true,
+    //    required : true,
        ref : "User"
    }
 })
  
  
-module.exports = mongoose.model("Articles" , articleSchema);
+module.exports = mongoose.model("Article" , articleSchema);
