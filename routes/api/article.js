@@ -25,7 +25,20 @@ router.get('/:id' , (req , res , next) =>{
 //Creating new article
 
 router.post('/new' , (req , res , next) =>{
-    Article.create()
+    Article.create(req.body , (err , newArticle)=>{
+        if(err) return res.json({msg : "Error creating new article"});
+        return res.json({newArticle});
+    })
+})
+
+//Update an article
+
+router.put('/update/:id' , (req , res , next) =>{
+    var id = req.params.id;
+    Article.findByIdAndUpdate(id , {new : true} , (err , updatedArticle) =>{
+        if(err) return res.json({msg : "Error updating the article"});
+        res.json({updatedArticle});
+    })
 })
 
 
