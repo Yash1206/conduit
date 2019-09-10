@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
  
+
+///article schema
 var articleSchema = new mongoose.Schema({
    title :{
        type : String,
@@ -8,6 +10,7 @@ var articleSchema = new mongoose.Schema({
    about : String,
    description : String,
    tags : String,
+   commentId : []
 })
  
  
