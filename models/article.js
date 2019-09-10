@@ -7,7 +7,10 @@ var articleSchema = new mongoose.Schema({
        type : String,
        required : true
    },
-   about : String,
+   about : {
+       type : String,
+       required : true
+   },
    description : String,
    tags : String,
    commentId : []
