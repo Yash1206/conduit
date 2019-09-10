@@ -22,6 +22,11 @@ router.get('/:id' , (req , res , next) =>{
     })
 })
 
+//Creating new article
+
+router.post('/new' , (req , res , next) =>{
+    Article.create()
+})
 
 
 
