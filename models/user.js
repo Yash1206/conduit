@@ -24,14 +24,14 @@ var userSchema = new mongoose.Schema({
 userSchema.pre('save' , function(next){
     if(this.password){
         this.password = bcrypt.hashSync(this.password , 10);
-        next();
     }
+    next();
  });
  
 
  ///Compare password
  
-userSchema.method.comparePassword = function(password){
+userSchema.methods.comparePassword = function(password){
     return bcrypt.compareSync(password , this.password);
  }
   
