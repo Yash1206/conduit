@@ -17,6 +17,7 @@ router.get('/:id' , (req , res , next) =>{
     var id = req.params.id;
     Article.findById(id , (err , article) =>{
         if(err) return res.json({msg : "Error finding the requested article"});
+        //find comments of the article
         res.json({article});
     })
 })
