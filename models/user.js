@@ -28,3 +28,14 @@ userSchema.pre('save' , function(next){
     }
  });
  
+
+ ///Compare password
+ 
+userSchema.method.comparePassword = function(password){
+    return bcrypt.compareSync(password , this.password);
+ }
+  
+ ///exporting schema
+ module.exports = mongoose.model("Users" , userSchema);
+ 
+ 
