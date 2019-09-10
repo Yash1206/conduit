@@ -33,7 +33,7 @@ router.post('/signin' , (req , res , next) =>{
     //Generate token'
 
     const token = jwt.sign({userId : user._id} , process.env.secret);
-    return 
+    res.json({token});
   })
 })
 module.exports = router;
