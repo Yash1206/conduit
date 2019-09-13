@@ -17,3 +17,6 @@ router.get('/:articleId' , (req , res , next)=>{
 //authorize only logged in users 
 router.use(authToken.verifyToken);
 
+//Add comments
+router.post()
+
