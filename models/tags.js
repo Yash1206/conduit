@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
-
+var Schema = mongoose.Schema;
 ///Tag Schema
-var tagSchema = new mongoose.Schema({
+var tagSchema = new Schema({
     artileId :{
         type : [Schema.Types.ObjectId],
         required : true,

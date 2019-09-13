@@ -23,6 +23,11 @@ router.get('/:id' , (req , res , next) =>{
     })
 });
 
+// get article from tag
+
+router.get('/tag/:tag' , (req , res , next) =>{
+    var tag = req.params.tag
+})
 //Authorizing user
 router.use(authToken.verifyToken);
 
