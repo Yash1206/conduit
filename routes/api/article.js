@@ -2,6 +2,9 @@ var express = require('express');
 var Article = require('../../models/article');
 var router = express.Router();
 var authToken = require('../../modules/varifyToken');
+var Tag = require('../../models/tags');
+var User = require('../../models/user');
+var Comment = require('../../models/comment');
 
 ///list all articles
 
@@ -26,7 +29,19 @@ router.get('/:id' , (req , res , next) =>{
 // get article from tag
 
 router.get('/tag/:tag' , (req , res , next) =>{
-    var tag = req.params.tag
+    var tag = req.params.tag;
+    Tag.findOne({tagText : tag} , (err , tag) =>{
+        if(err) return res.json({msg : "Error finding tag" , err});
+        var articleIdArr = tag.articleId;
+        var articleArr = [];
+        articleArr.forEach(e =>{
+            Article.find({_id : e} , (err , article) =>{
+                if(err) return res.json({msg : 'Error while finding article by tag' , err});
+                articleArr.push(article);
+                articleArr.length == articleIdArr.length ? res.json({articleArr}) : "";
+            })
+        })
+    })
 })
 //Authorizing user
 router.use(authToken.verifyToken);
