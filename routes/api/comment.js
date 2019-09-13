@@ -44,8 +44,9 @@ router.delete('/delete/:commentId' , (req , res , next) =>{
                 return res.json('Comment deleted');
             });
         }else{
-            return res.json({msg : 'You cannot delete this commen'})
+            return res.json({msg : 'You cannot delete this comment'});
         }
-    })
-})
+    });
+});
 
+module.exports = router;
