@@ -49,33 +49,70 @@ router.use(authToken.verifyToken);
 //Creating new article
 
 router.post('/new' , (req , res , next) =>{
+    req.body.userId = req.userid;
     Article.create(req.body , (err , newArticle)=>{
-        if(err) return res.json({msg : "Error creating new article"});
-        return res.json({newArticle});
+        if(err) return res.json({msg : "Error creating new article" , err});
+        //Creating Tags
+        if(newArticle.tag){
+            var tagArr = newArticle.tag.split(',');
+            tagArr.forEach(e =>{
+                Tag.findOne({tagText : e.trim()} , (err , existingTag) =>{
+                    if (err) return res.json({msg : 'Error while finding tag.'});
+                    if(!existingTag){
+                        Tag.create({articleId :[newArticle.id] , tagText : e.trim()} , (err , tag) =>{
+                            if(err) return res.json('Error while creating tag');
+                        });
+                    }else if(existingTag){
+                        Tag.findByIdAndUpdate(existingTag.id , {$push: {articleId : newArticle.id}} , {new : true} , (err , updatedTag) =>{
+                            if(err) return res.json({msg : 'Error while updating tag.'});
+                        });
+                    };
+                });
+            });
+        };
+        User.findOneAndUpdate({_id : newArticle.userId} , {$push:{articleId: newArticle.id}} , {new : true} ,(err , updatedUser) =>{
+            if(err) return res.json({msg : 'Error updating user with array of articleId' , err});
+            return res.json({msg : 'User updated sucessfully' , newArticle})
+        })
     })
 });
 
 //Update an article
 
-router.put('/update/:id', (req , res , next) =>{
-    var id = req.params.id;
-    Article.findByIdAndUpdate(id, req.body, {new : true} , (err , updatedArticle) =>{
-        if(err) return res.json({msg : "Error updating the article"});
-        res.json({updatedArticle});
-    })
+router.put('/:slug' , (req , res , next) =>{
+    var slug = req.params.slug;
+    var loggedInUser = req.userId;
+    //Authorizing only the creator to make changes
+    Article.findOne({slug} , (err , article) =>{
+        if(err) return res.json({msg : 'Error finding the article' , err});
+        if(loggedInUser === article.userId){
+            Article.findOneAndUpdate({slug} , req.body , {new : true} , (err , updatedArticle)=>{
+                if(err) return res.json({msg : 'Error updating article' , err});
+                return res.json({updatedArticle});
+            });
+        }else{
+            return res.json({msg : 'You cannot edit this article'});
+        };
+    });
 });
 
 //deleting article
 
-router.delete('/delete/:id' , (req , res , next) =>{
-    var id = req.params.id;
-    Article.findByIdAndDelete(id , (err , deletedContent) =>{
-        if(err) return res.json({msg : "Error deleting article"});
-        return res.json({msg : "Success"});
+router.delete('/:slug' , (req , res , next) =>{
+    var slug = req.params.slug;
+    var loggedInUser = req.userId;
+    //Authorizing only the creator of the article to delete
+    Article.findOne({slug} , (err , article) =>{
+        if(err) return res.json({msg : 'Error deleting article' , err});
+        if(!article) return res.json({msg : 'No article found'});
+        if(loggedInUser == article.userid){
+            Article.findOneAndDelete({slug} , (err , deletedArticle) =>{
+                if(err) return res.json({msg : 'Error deleting article' , err});
+                //Deleting comments alongwith aritcles
+            })
+        }
     })
-});
-
-
+})
 
 
 
